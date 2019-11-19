@@ -23,7 +23,9 @@ _UserAgent_ = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 
 
 
 FEEDS = OrderedDict([
-        ('Relácie','http://www.tvba.sk/relacie/'),   
+        ('Najnovšie','http://www.tvba.sk/cely-archiv/podla-datumu/')
+        ('Pravidelné programy','http://www.tvba.sk/relacie/'),
+        ('Ostatné relácie a videá','http://www.tvba.sk/cely-archiv/ostatne-relacie-a-videa/'),  
         ])
 
 def log(msg, level=xbmc.LOGDEBUG):
@@ -85,15 +87,15 @@ def list_videos(category):
     :param category: Category name
     :type category: str
     """
-    # Set plugin category. It is displayed in some skins as the name
-    # of the current section.
-    xbmcplugin.setPluginCategory(_handle, category)
     # Set plugin content. It allows Kodi to select appropriate views
     # for this type of content.
     xbmcplugin.setContent(_handle, 'videos')
     # Get the list of videos in the category.
     if 'tvba.sk' not in category:
         path=FEEDS[category]
+        # Set plugin category. It is displayed in some skins as the name
+        # of the current section.
+        xbmcplugin.setPluginCategory(_handle, category)
     else:
         path=category
     httpdata = fetchUrl(path, "Loading categories...")
@@ -124,8 +126,12 @@ def list_videos(category):
         xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder)
     #handle episodes
     for item in re.findall(r'<div class="article_holder article_holder_4c(.*?)</span></div>', httpdata, re.DOTALL):
-        url=re.search(r'<a href="(\S+?)">',item).group(1)
-        thumb = re.search(r'src="(\S+?)"',item).group(1)
+        url=re.search(r'<a href="(\S+?)"',item).group(1)
+        thumb=re.search(r'src="(\S*?)"',item)
+        if thumb:
+            thumb = thumb.group(1)
+        else:
+            thumb=''
         title = re.search(r'<span class="packed_article_title">(.*?)<\/span>',item).group(1)
         # Create a list item with a text label and a thumbnail image.
         list_item = xbmcgui.ListItem(label=title)
@@ -166,7 +172,11 @@ def play_video(path):
     # get video link
     html = fetchUrl(path, "Loading video...")
     if html:
-        url = re.search(r'src="(https:\/\/video\.onnetwork\.tv\S+?)"><\/script>',html).group(1)
+        url = re.search(r'src="(https:\/\/video\.onnetwork\.tv\S+?)"><\/script>',html)
+        if not url:
+            xbmcgui.Dialog().ok('Chyba', 'Video nie je dostupné', '', '')
+            return False
+        url=url.group(1)
         html = fetchUrl(url, "Loading video...")
         videoID=re.search(r' videoID:(\d+)"',html).group(1)
         url=re.search(r'frameSrc : "(\S+?),', html).group(1)
