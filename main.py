@@ -23,7 +23,7 @@ _UserAgent_ = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 
 
 
 FEEDS = OrderedDict([
-        ('Najnovšie','http://www.tvba.sk/cely-archiv/podla-datumu/')
+        ('Najnovšie','http://www.tvba.sk/cely-archiv/podla-datumu/'),
         ('Pravidelné programy','http://www.tvba.sk/relacie/'),
         ('Ostatné relácie a videá','http://www.tvba.sk/cely-archiv/ostatne-relacie-a-videa/'),  
         ])
