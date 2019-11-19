@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.tvba.sk"
+version="0.1.0"
+name="TV Bratislava"
+provider-name="rywko">
+  <requires>
+    <import addon="xbmc.python" version="2.14.0" />
+  </requires>
+	<extension point="xbmc.python.pluginsource" library="main.py">
+		<provides>video</provides>
+	</extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">tvba.sk</summary>
+    <summary lang="cs">tvba.sk</summary>
+    <summary lang="sk">tvba.sk</summary>
+    <description lang="en">Watch online TV archive from .tvba.sk</description>
+    <description lang="cs">Sledujte online TV archiv ze serveru tvba.sk</description>
+    <description lang="sk">Sledujte online TV archív zo serveru tvba.sk</description>
+    <platform>all</platform>
+  <assets>
+    <icon>icon.png</icon>
+    <fanart>fanart.jpg</fanart>
+  </assets>
+</extension>
+</addon>
