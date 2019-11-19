@@ -154,6 +154,7 @@ def list_videos(category):
         xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder)
     next=re.search(r'"next_prev_page_nums_act".*?document\.location\.href=\'(.+?)\'',httpdata)
     if next:
+        path=path.split('?')[0]
         url = get_url(action='listing', category=path+next.group(1))
         is_folder = True
         xbmcplugin.addDirectoryItem(_handle, url, xbmcgui.ListItem(label='Ďalšie'), is_folder)    
