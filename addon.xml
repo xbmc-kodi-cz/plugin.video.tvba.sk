@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.tvba.sk"
-version="0.1.0"
+version="0.1.1"
 name="TV Bratislava"
 provider-name="rywko">
   <requires>
@@ -13,7 +13,7 @@ provider-name="rywko">
     <summary lang="en">tvba.sk</summary>
     <summary lang="cs">tvba.sk</summary>
     <summary lang="sk">tvba.sk</summary>
-    <description lang="en">Watch online TV archive from .tvba.sk</description>
+    <description lang="en">Watch online TV archive from tvba.sk</description>
     <description lang="cs">Sledujte online TV archiv ze serveru tvba.sk</description>
     <description lang="sk">Sledujte online TV archív zo serveru tvba.sk</description>
     <platform>all</platform>
