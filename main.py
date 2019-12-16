@@ -182,7 +182,13 @@ def play_video(path):
         videoID=re.search(r' videoID:(\d+)"',html).group(1)
         url=re.search(r'frameSrc : "(\S+?)"', html).group(1)
         html = fetchUrl(url, "Loading video...",path)
-        videolink=re.search(r'id : '+videoID+r',.*?],url:"(\S*3u8)',html).group(1)
+        url=re.search(r'id : '+videoID+r',.*?],url:"(\S*3u8)',html).group(1)
+        #choose highest quality
+        httpdata = fetchUrl(url, "Loading playlist...")
+        streams = re.compile('RESOLUTION=\d+x(\d+).*\n([^#].+)').findall(httpdata) 
+        streams.sort(key=lambda x: int(x[0]),reverse=True)
+        videolink=url.rsplit('/', 1)[0] + '/' +  streams[0][1]
+        logErr("Playing video " + videolink)
         play_item = xbmcgui.ListItem(path=videolink)
         # Pass the item to the Kodi player.
         xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
