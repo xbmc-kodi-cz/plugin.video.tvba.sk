@@ -5,6 +5,7 @@ name="TV Bratislava"
 provider-name="rywko">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
+    <import addon="script.module.stream.resolver" version="1.6.61" />
   </requires>
 	<extension point="xbmc.python.pluginsource" library="main.py">
 		<provides>video</provides>

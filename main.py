@@ -11,6 +11,7 @@ import urllib2
 from urlparse import parse_qsl
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 import re
+import resolver
 
 # Get the plugin url in plugin:// notation.
 _url = sys.argv[0]
@@ -174,24 +175,29 @@ def play_video(path):
     html = fetchUrl(path, "Loading video...")
     if html:
         url = re.search(r'src="(https:\/\/video\.onnetwork\.tv\S+?)"><\/script>',html)
-        if not url:
-            xbmcgui.Dialog().ok('Chyba', 'Video nie je dostupné', '', '')
-            return False
-        url=url.group(1)
-        html = fetchUrl(url, "Loading video...")
-        videoID=re.search(r' videoID:(\d+)"',html).group(1)
-        url=re.search(r'frameSrc : "(\S+?)"', html).group(1)
-        html = fetchUrl(url, "Loading video...",path)
-        url=re.search(r'id : '+videoID+r',.*?],url:"(\S*3u8)',html).group(1)
-        #choose highest quality
-        httpdata = fetchUrl(url, "Loading playlist...")
-        streams = re.compile('RESOLUTION=\d+x(\d+).*\n([^#].+)').findall(httpdata) 
-        streams.sort(key=lambda x: int(x[0]),reverse=True)
-        videolink=url.rsplit('/', 1)[0] + '/' +  streams[0][1]
+        if url:
+            url=url.group(1)
+            html = fetchUrl(url, "Loading video...")
+            videoID=re.search(r' videoID:(\d+)"',html).group(1)
+            url=re.search(r'frameSrc : "(\S+?)"', html).group(1)
+            html = fetchUrl(url, "Loading video...",path)
+            url=re.search(r'id : '+videoID+r',.*?],url:"(\S*3u8)',html).group(1)
+            #choose highest quality
+            httpdata = fetchUrl(url, "Loading playlist...")
+            streams = re.compile('RESOLUTION=\d+x(\d+).*\n([^#].+)').findall(httpdata) 
+            streams.sort(key=lambda x: int(x[0]),reverse=True)
+            videolink=url.rsplit('/', 1)[0] + '/' +  streams[0][1]
+        else:
+            resolved = resolver.findstreams(html,['src="(?P<url>https:\/\/www.youtube.com\/\S+?)"'])
+            if not resolved:
+                xbmcgui.Dialog().ok('Chyba', 'Video nie je dostupné', '', '')
+                return False
+            videolink=resolved[0]['url']
         logErr("Playing video " + videolink)
         play_item = xbmcgui.ListItem(path=videolink)
         # Pass the item to the Kodi player.
         xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
+      
 
 
 def router(paramstring):
