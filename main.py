@@ -34,14 +34,11 @@ def log(msg, level=xbmc.LOGDEBUG):
         msg = msg.encode('utf-8')
     xbmc.log("[%s] %s"%(_scriptname_,msg.__str__()), level)
 
-def logDbg(msg):
-    log(msg,level=xbmc.LOGDEBUG)
-
-def logErr(msg):
-    log(msg,level=xbmc.LOGERROR)
+def logN(msg):
+    log(msg,level=xbmc.LOGNOTICE)
 
 def fetchUrl(url, label, ref=''):
-    logErr("fetchUrl " + url + ", label:" + label)
+    logN("fetchUrl " + url + ", label:" + label)
     httpdata = ''	
     req = urllib2.Request(url)
     req.add_header('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0')
@@ -76,7 +73,7 @@ def list_categories():
         url = get_url(action='listing', category=category)
         is_folder = True
         xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder)
-        logErr("category " + category + " added")
+        logN("category " + category + " added")
     xbmcplugin.addSortMethod(_handle, xbmcplugin.SORT_METHOD_UNSORTED)
     
     xbmcplugin.endOfDirectory(_handle)
@@ -193,7 +190,7 @@ def play_video(path):
                 xbmcgui.Dialog().ok('Chyba', 'Video nie je dostupné', '', '')
                 return False
             videolink=resolved[0]['url']
-        logErr("Playing video " + videolink)
+        logN("Playing video " + videolink)
         play_item = xbmcgui.ListItem(path=videolink)
         # Pass the item to the Kodi player.
         xbmcplugin.setResolvedUrl(_handle, True, listitem=play_item)
