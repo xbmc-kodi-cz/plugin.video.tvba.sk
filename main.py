@@ -119,7 +119,7 @@ def list_videos(category):
         url='plugin://plugin.video.tvba.sk/?action=listing&category=' +url
         # Add the list item to a virtual Kodi folder.
         # is_folder = False means that this item won't open any sub-list.
-        xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder=True)
+        xbmcplugin.addDirectoryItem(_handle, url, list_item, True)
  
     #handle episodes
     for item in re.findall(r'<div class="article_holder article_holder_4c(.*?)</span></div>', httpdata, re.DOTALL):
@@ -143,13 +143,13 @@ def list_videos(category):
         url='plugin://plugin.video.tvba.sk/?action=play&video=' +url
         # Add the list item to a virtual Kodi folder.
         # is_folder = False means that this item won't open any sub-list.
-        xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder=False)
+        xbmcplugin.addDirectoryItem(_handle, url, list_item, False)
 
     next=re.search(r'"next_prev_page_nums_act".*?document\.location\.href=\'(.+?)\'',httpdata)
     if next:
         path=path.split('?')[0]
         url = get_url(action='listing', category=path+next.group(1))
-        xbmcplugin.addDirectoryItem(_handle, url, xbmcgui.ListItem(label='Ďalšie'), is_folder=True)    
+        xbmcplugin.addDirectoryItem(_handle, url, xbmcgui.ListItem(label='Ďalšie'), True)    
     
     xbmcplugin.addSortMethod(_handle, xbmcplugin.SORT_METHOD_NONE)
     xbmcplugin.endOfDirectory(_handle)
