@@ -102,14 +102,14 @@ def list_videos(category):
         url=re.search(r'<a href="(\S+?)">',item).group(1)
         thumb = re.search(r'src="(\S+?)"',item).group(1)
         title = re.search(r'alt="(.+?)"',item).group(1)
-        plot = re.search(r'<div class="prod_description segment_cat_desc_div">(.*)',item).group(1)
+        plot = re.search(r'<div class="prod_description segment_cat_desc_div">(.*)',item).group(1).strip()
         # Create a list item with a text label and a thumbnail image.
         list_item = xbmcgui.ListItem(label=title)
         
         # Set additional info for the list item.
         # 'mediatype' is needed for skin to display info for this ListItem correctly.
         list_item.setInfo('video', {'title': title,
-                                    'plot': plot.strip(),
+                                    'plot': plot,
                                     'mediatype': 'video'})
                                     
         list_item.setArt({'thumb': thumb, 'icon': thumb, 'fanart': thumb})
@@ -119,17 +119,13 @@ def list_videos(category):
         url='plugin://plugin.video.tvba.sk/?action=listing&category=' +url
         # Add the list item to a virtual Kodi folder.
         # is_folder = False means that this item won't open any sub-list.
-        is_folder = True
-
-        xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder)
+        xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder=True)
+ 
     #handle episodes
     for item in re.findall(r'<div class="article_holder article_holder_4c(.*?)</span></div>', httpdata, re.DOTALL):
         url=re.search(r'<a href="(\S+?)"',item).group(1)
         thumb=re.search(r'src="(\S*?)"',item)
-        if thumb:
-            thumb = thumb.group(1)
-        else:
-            thumb=''
+        thumb = thumb.group(1) if thumb else ''
         title = re.search(r'<span class="packed_article_title">(.*?)<\/span>',item).group(1)
         # Create a list item with a text label and a thumbnail image.
         list_item = xbmcgui.ListItem(label=title)
@@ -137,7 +133,7 @@ def list_videos(category):
         # Set additional info for the list item.
         # 'mediatype' is needed for skin to display info for this ListItem correctly.
         list_item.setInfo('video', {'title': title,
-                                    'plot': '',
+                                    'plot': title,
                                     'mediatype': 'video'})
                                     
         list_item.setArt({'thumb': thumb, 'icon': thumb, 'fanart': thumb})
@@ -147,15 +143,13 @@ def list_videos(category):
         url='plugin://plugin.video.tvba.sk/?action=play&video=' +url
         # Add the list item to a virtual Kodi folder.
         # is_folder = False means that this item won't open any sub-list.
-        is_folder = False
+        xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder=False)
 
-        xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder)
     next=re.search(r'"next_prev_page_nums_act".*?document\.location\.href=\'(.+?)\'',httpdata)
     if next:
         path=path.split('?')[0]
         url = get_url(action='listing', category=path+next.group(1))
-        is_folder = True
-        xbmcplugin.addDirectoryItem(_handle, url, xbmcgui.ListItem(label='Ďalšie'), is_folder)    
+        xbmcplugin.addDirectoryItem(_handle, url, xbmcgui.ListItem(label='Ďalšie'), is_folder=True)    
     
     xbmcplugin.addSortMethod(_handle, xbmcplugin.SORT_METHOD_NONE)
     xbmcplugin.endOfDirectory(_handle)
