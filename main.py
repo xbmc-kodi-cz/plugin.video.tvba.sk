@@ -101,7 +101,7 @@ def list_videos(url):
                                     'mediatype': 'video'})
         list_item.setArt({'thumb': thumb, 'icon': thumb, 'fanart': thumb})
         list_item.setProperty('IsPlayable', 'false')       
-        url = get_url(action='play', video=url)
+        url = get_url(action='listing', url=url)
         # Add the list item to a virtual Kodi folder.
         # is_folder = False means that this item won't open any sub-list.
         xbmcplugin.addDirectoryItem(_handle, url, list_item, True)
