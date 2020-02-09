@@ -22,11 +22,10 @@ _scriptname_ = _addon_.getAddonInfo('name')
 home = _addon_.getAddonInfo('path')
 _UserAgent_ = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0'
 
-
 FEEDS = OrderedDict([
-        ('Najnovšie','http://www.tvba.sk/cely-archiv/podla-datumu/'),
+        ('Najnovšie','http://www.tvba.sk/relacie/podla-datumu/'),
         ('Pravidelné programy','http://www.tvba.sk/relacie/'),
-        ('Ostatné relácie a videá','http://www.tvba.sk/cely-archiv/ostatne-relacie-a-videa/'),  
+        ('Ostatné relácie a videá','http://www.tvba.sk/relacie/ostatne-relacie-a-videa/'),  
         ])
 
 def log(msg, level=xbmc.LOGDEBUG):
