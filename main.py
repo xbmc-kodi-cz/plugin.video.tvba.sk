@@ -149,7 +149,7 @@ def play_video(path):
         if url:
             url=url.group(1)
             html = fetchUrl(url, "Loading video...")
-            videoID=re.search(r' videoID:(\d+)"',html).group(1)
+            videoID=re.search(r' videoID:(\d+) ?"',html).group(1)
             url=re.search(r'frameSrc : "(\S+?)"', html).group(1)
             html = fetchUrl(url, "Loading video...",path)
             url=re.search(r'id : '+videoID+r',.*?],url:"(\S*3u8)',html).group(1)
