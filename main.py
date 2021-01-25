@@ -24,8 +24,7 @@ _UserAgent_ = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101 
 
 FEEDS = OrderedDict([
         ('Najnovšie','http://www.tvba.sk/relacie/podla-datumu/'),
-        ('Pravidelné programy','http://www.tvba.sk/relacie/'),
-        ('Ostatné relácie a videá','http://www.tvba.sk/relacie/ostatne-relacie-a-videa/'),  
+        ('Archív','http://www.tvba.sk/relacie/'),
         ])
 
 def log(msg, level=xbmc.LOGDEBUG):
@@ -90,7 +89,8 @@ def list_videos(url):
         url=re.search(r'<a href="(\S+?)">',item).group(1)
         thumb = re.search(r'src="(\S+?)"',item).group(1)
         title = re.search(r'alt="(.+?)"',item).group(1)
-        plot = re.search(r'<div class="prod_description segment_cat_desc_div">(.*)',item).group(1).strip()
+        plot = re.search(r'<div class="prod_description segment_cat_desc_div">(.*)',item)
+        plot = plot.group(1).strip() if plot else ''
         # Create a list item with a text label and a thumbnail image.
         list_item = xbmcgui.ListItem(label=title)
         # Set additional info for the list item.
@@ -204,3 +204,4 @@ if __name__ == '__main__':
     # Call the router function and pass the plugin call parameters to it.
     # We use string slicing to trim the leading '?' from the plugin call paramstring
     router(sys.argv[2][1:])
+
