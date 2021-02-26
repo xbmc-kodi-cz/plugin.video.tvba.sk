@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.tvba.sk"
-version="0.1.11"
+version="1.0.0"
 name="TV Bratislava"
 provider-name="rywko">
   <requires>
-    <import addon="xbmc.python" version="2.14.0" />
-    <import addon="script.module.stream.resolver" version="1.6.61" />
+    <import addon="xbmc.python" version="3.0.0" />
+    <import addon="script.module.stream.resolver" version="1.7.2" />
   </requires>
 	<extension point="xbmc.python.pluginsource" library="main.py">
 		<provides>video</provides>

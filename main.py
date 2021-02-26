@@ -6,9 +6,9 @@
 
 import sys, os
 from collections import OrderedDict
-from urllib import urlencode
-import urllib2
-from urlparse import parse_qsl
+from urllib.parse import urlencode
+import urllib.request, urllib.error, urllib.parse
+from urllib.parse import parse_qsl
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
 import re
 import resolver
@@ -33,17 +33,17 @@ def log(msg, level=xbmc.LOGDEBUG):
     xbmc.log("[%s] %s"%(_scriptname_,msg.__str__()), level)
 
 def logN(msg):
-    log(msg,level=xbmc.LOGNOTICE)
+    log(msg,level=xbmc.LOGINFO)
 
 def fetchUrl(url, label, ref=''):
     logN("fetchUrl " + url + ", label:" + label)
     httpdata = ''	
-    req = urllib2.Request(url)
+    req = urllib.request.Request(url)
     req.add_header('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0')
     if ref!='':
        req.add_header('Referer', ref)
-    resp = urllib2.urlopen(req)
-    httpdata = resp.read()
+    resp = urllib.request.urlopen(req)
+    httpdata = resp.read().decode('utf-8')
     resp.close()
     return httpdata
 
@@ -65,7 +65,7 @@ def list_categories():
     """
     xbmcplugin.setContent(_handle, 'videos')
 
-    for category in FEEDS.iterkeys():
+    for category in FEEDS.keys():
         list_item = xbmcgui.ListItem(label=category)
         url = get_url(action='listing', url=FEEDS[category])
         is_folder = True
