@@ -149,10 +149,11 @@ def play_video(path):
         if url:
             url=url.group(1)
             html = fetchUrl(url, "Loading video...")
-            videoID=re.search(r' videoID:(\d+) ?"',html).group(1)
-            url=re.search(r'frameSrc : "(\S+?)"', html).group(1)
+            videoID=re.search(r'mid:\"(\S+?)\",',html).group(1)
+            #url=re.search(r'frameSrc : "(\S+?)"', html).group(1)
+            url='https://video.onnetwork.tv/frame86.php?mid=' + videoID
             html = fetchUrl(url, "Loading video...",path)
-            url=re.search(r'id : '+videoID+r',.*?],url:"(\S*3u8)',html).group(1)
+            url=re.search(r'id : \d+,.*?],url:"(\S*3u8)',html).group(1)
             #choose highest quality
             httpdata = fetchUrl(url, "Loading playlist...")
             streams = re.compile('RESOLUTION=\d+x(\d+).*\n([^#].+)').findall(httpdata) 
@@ -204,4 +205,3 @@ if __name__ == '__main__':
     # Call the router function and pass the plugin call parameters to it.
     # We use string slicing to trim the leading '?' from the plugin call paramstring
     router(sys.argv[2][1:])
-
