@@ -162,7 +162,7 @@ def play_video(path):
         else:
             resolved = resolver.findstreams(html,['src="(?P<url>https:\/\/www.youtube.com\/\S+?)"'])
             if not resolved:
-                xbmcgui.Dialog().ok('Chyba', 'Video nie je dostupné', '', '')
+                xbmcgui.Dialog().ok('Chyba', 'Video nie je dostupné')
                 return False
             videolink=resolved[0]['url']
         logN("Playing video " + videolink)
